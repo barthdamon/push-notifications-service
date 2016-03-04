@@ -2,15 +2,15 @@ require('dotenv').config({silent: true});
 
 module.exports = {
 	main: {
-		port: process.ENV.PORT
+		port: process.env.PORT
 	},
 	mongodb: {
-		uri: process.ENV.MONGODB_URI
+		uri: process.env.MONGODB_URI
 	},
 	aws: {
-		region: process.ENV.AWS_DEFAULT_REGION,
-		appleArnId: process.ENV.APPLE_ARN,
-		androidArnId: process.ENV.ANDROID_ARN,
-		snsTopicArn: process.ENV.SNS_TOPIC_ARN
+		region: process.env.AWS_DEFAULT_REGION,
+		appleArnId: process.env.APPLE_ARN,
+		androidArnId: process.env.ANDROID_ARN,
+		snsTopicArn: process.env.SNS_TOPIC_ARN
 	}
 };

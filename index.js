@@ -21,6 +21,6 @@ app.use(bodyParser.json());
 app.post('/device/new', deviceTokens.addToken);
 app.post('/notification/push', pushem.sendNotification);
 
-app.listen(config.main.port, function () {
+app.listen(config.main.port, () => {
 	console.log('Node app is running on port', config.main.port);
 });

@@ -1,6 +1,6 @@
 const test = require('tape');
 
-test('Passing test', function (t) {
+test('Passing test', t => {
 	t.ok(true);
 	t.end();
 });

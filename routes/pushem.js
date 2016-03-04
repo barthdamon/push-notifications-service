@@ -1,6 +1,6 @@
 const config = require('../config');
 
-exports.sendNotification = function (req, res) {
+exports.sendNotification = (req, res) => {
 	const body = req.body;
 	const applePush = buildApplePush(body.appleMessage, body.appleLink);
 	const androidPush = buildAndroidPush(body.androidMessage, body.androidLink, body.title);
@@ -23,7 +23,7 @@ exports.sendNotification = function (req, res) {
 	};
 	console.log(`Sending an sns to amazon: ${JSON.stringify(message)}`);
 
-	new req.app.get('aws').SNS().publish(snsParams, function(err, data) { // eslint-disable-line
+	new req.app.get('aws').SNS().publish(snsParams, (err, data) => { // eslint-disable-line
 		if (err) {
 			res.status(400).json({message: err});
 		} else {

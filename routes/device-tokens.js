@@ -7,23 +7,21 @@ const deviceSchema = mongoose.Schema({ // eslint-disable-line
 });
 const DeviceToken = mongoose.model('DeviceToken', deviceSchema);
 
-exports.addToken = function (req, res) {
-	var newToken = req.body.token;
-	var platform = req.body.platform;
-	if (newToken && platform) {
-		var newDevice = new DeviceToken({
-			token: newToken,
-			platform: platform
-		});
-		newDevice.save(function (err) {
+exports.addToken = (req, res) => {
+	const token = req.body.token;
+	const platform = req.body.platform;
+	if (token && platform) {
+		const newDevice = new DeviceToken({token, platform});
+
+		newDevice.save(err => {
 			if (err) {
-				res.status(400).json({message: 'notification token registration failure: ' + err});
+				res.status(400).json({message: `notification token registration failure: ${err}`});
 			} else {
 				createPlatformEndpoint(req)
-				.then(function () {
+				.then(() => {
 					res.status(200).json({message: 'notification token registration successful'});
-				}).catch(function (err) {
-					res.status(400).json({message: 'notification token registration failure: ' + err});
+				}).catch(err => {
+					res.status(400).json({message: `notification token registration failure: ${err}`});
 				});
 			}
 		});
@@ -33,20 +31,12 @@ exports.addToken = function (req, res) {
 };
 
 function createPlatformEndpoint(req) {
-	var token = req.body.token;
-	var platform = req.body.platform;
-	var applicationArn = null;
-	if (platform === 'apple') {
-		applicationArn = config.aws.appleArn;
-		console.log('Apple device registering');
-	} else if (platform === 'android') {
-		applicationArn = config.aws.androidArn;
-		console.log('Android device registering');
-	}
+	const token = req.body.token;
+	const platform = req.body.platform;
 
-	return new Promise(function (resolve, reject) {
+	return new Promise((resolve, reject) => {
 		const params = {
-			PlatformApplicationArn: applicationArn, /* required */
+			PlatformApplicationArn: config.aws[`${platform}Arn`],
 			Token: token
 		};
 
@@ -59,10 +49,10 @@ function createPlatformEndpoint(req) {
 				console.log('new platform endpoint creation success');
 				console.log(data);
 				subscripeEndpointToTopic(req, data)
-					.then(function (subscriptionData) {
+					.then(subscriptionData => {
 						resolve(subscriptionData);
 					})
-					.catch(function (subscriptionErr) {
+					.catch(subscriptionErr => {
 						reject(subscriptionErr);
 					});
 			}
@@ -72,7 +62,7 @@ function createPlatformEndpoint(req) {
 
 function subscripeEndpointToTopic(req, data) {
 	console.log('Subscribing new endpoint');
-	return new Promise(function (resolve, reject) {
+	return new Promise((resolve, reject) => {
 		const params = {
 			Protocol: 'application', /* required */
 			TopicArn: config.aws.snsTopicArn, /* required */

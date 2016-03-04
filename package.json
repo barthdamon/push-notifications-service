@@ -20,8 +20,12 @@
     "mongoose": "^4.3.3"
   },
   "devDependencies": {
+    "nodemon": "^1.9.1",
     "tap-spec": "^4.1.1",
     "tape": "^4.5.0",
     "xo": "^0.12.1"
-  }
+  },
+	"xo": {
+		"esnext": true
+	}
 }

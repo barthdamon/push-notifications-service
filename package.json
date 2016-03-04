@@ -1,12 +1,14 @@
 {
-  "name": "odd-notification-service",
+  "name": "push-notification-service",
   "version": "1.0.0",
-  "description": "a service for sending push notifications to odd networks OTT applications",
+  "description": "A service for sending push notifications to odd networks OTT applications",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=development nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "npm run xo && npm run tape",
+    "tape": "tape 'test/**/*_test.js' | tap-spec",
+    "xo": "xo"
   },
   "author": "ODD Networks",
   "license": "ISC",
@@ -16,5 +18,10 @@
     "body-parser": "^1.14.2",
     "express": "^4.13.3",
     "mongoose": "^4.3.3"
+  },
+  "devDependencies": {
+    "tap-spec": "^4.1.1",
+    "tape": "^4.5.0",
+    "xo": "^0.12.1"
   }
 }

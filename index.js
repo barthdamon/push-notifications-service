@@ -1,32 +1,26 @@
-'use strict';
+const config = require('./config');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-let express = require('express');
-let app = express();
-app.set('port', (process.env.PORT || 3000));
+const AWS = require('aws-sdk');
+AWS.config.update(config.aws);
 
-let AWS = require('aws-sdk');
-AWS.config.update({region: 'us-east-1'});
+const mongoose = require('mongoose');
+mongoose.connect(config.mongodb.uri);
 
-//MARK: MODULES
-let bodyParser = require('body-parser');
-let deviceTokens = require('./routes/device-tokens.js');
-let pushem = require('./routes/pushem.js');
+const deviceTokens = require('./routes/device-tokens');
+const pushem = require('./routes/pushem');
 
-//MARK: MIDDLEWARE
-app.use(bodyParser.urlencoded({ extended: false }));
+const app = express();
+
+app.set('aws', AWS);
+
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-
-//MARK: ROUTES
-app.get('/', function(req, res) {
-	res.status(200).json({"message":"Server Online"});
-});
-app.post('/', function(req, res) {
-	res.status(200).json({"message":"Server Online"});
-});
 
 app.post('/device/new', deviceTokens.addToken);
 app.post('/notification/push', pushem.sendNotification);
 
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+app.listen(config.main.port, function () {
+	console.log('Node app is running on port', config.main.port);
 });

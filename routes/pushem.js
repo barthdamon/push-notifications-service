@@ -16,6 +16,7 @@ exports.sendNotification = (req, res) => {
 	if (androidPush) {
 		message.GCM = androidPush;
 	}
+	// TODO: Get the topic ARN for the organization in the request
 	const snsParams = {
 		TopicArn: config.aws.snsTopicArn,
 		MessageStructure: 'json',

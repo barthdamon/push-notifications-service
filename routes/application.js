@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 // const config = require('../config');
 
 const platformApplicationSchema = mongoose.Schema({ // eslint-disable-line
-	name: String,
+	platform: String,
+	orgId: String,
 	topicArn: String
 });
 const PlatformApplication = mongoose.model('PlatformApplication', platformApplicationSchema);
@@ -21,5 +22,10 @@ module.exports = {
 				})
 			.done();
 		});
-	}
+	},
+
+	// Potential CLI Route
+	// createPlatformApplication: (platform, orgId, topicArn) => {
+
+	// }
 };

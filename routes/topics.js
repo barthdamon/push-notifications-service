@@ -8,17 +8,18 @@ const organizationTopicSchema = mongoose.Schema({ // eslint-disable-line
 const OrganizationTopic = mongoose.model('OrganizationTopic', organizationTopicSchema);
 
 module.exports = {
+	// Potential CLI route
 	createOrganizationTopic: (req, res) => {
-		const Name = req.body.organizationName;
+		const name = req.body.orgId;
 		const params = {
-			Name
+			name
 		};
 		new req.app.get('aws').SNS().createTopic(params, (err, data) => { // eslint-disable-line
 			if (err) {
 				res.status(400).json({message: `organization topic creation failure ${err}`});
 			} else {
 				const arn = data.arn;
-				const name = data.name;
+				const name = data.orgId;
 				const newOrganization = new OrganizationTopic({name, arn});
 				newOrganization.save(err => {
 					if (err) {

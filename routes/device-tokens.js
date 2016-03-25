@@ -1,4 +1,3 @@
-const config = require('../config');
 const mongoose = require('mongoose');
 const OrganizationTopic = require('./topics.js');
 const PlatformApplication = require('./application.js');
@@ -41,18 +40,16 @@ module.exports = {
 function createPlatformEndpoint(req) {
 	const token = req.body.token;
 	const platform = req.body.platform;
-	// TODO: get orgId
-	const orgId = req.orgId;
+	const orgId = req.identity.orgainization.id;
 
 	return new Promise((resolve, reject) => {
-		// TODO: get the platform Application Arn from the database
-		PlatformApplication.getPlatformApplicationARN(req.orgId)
+		PlatformApplication.getPlatformApplicationARN(orgId, platform)
 			.then(application => {
 				const ARN = application.ARN;
-				console.log(`ARN: ${ARN}`);
+				console.log(`ARN: ${ARN}, platform: ${platform}, orgId: ${orgId}`);
 				// TODO: Promisify and plug in the ARN
 				const params = {
-					PlatformApplicationArn: config.aws[`${platform}Arn`],
+					PlatformApplicationArn: ARN,
 					Token: token
 				};
 
@@ -70,7 +67,8 @@ function createPlatformEndpoint(req) {
 							})
 							.catch(subscriptionErr => {
 								reject(subscriptionErr);
-							});
+							})
+						.done();
 					}
 				});
 			})

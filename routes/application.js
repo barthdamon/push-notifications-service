@@ -11,9 +11,9 @@ const PlatformApplication = mongoose.model('PlatformApplication', platformApplic
 // TODO: have a create platform application CLI tool? or a route that can somehow do it but dont think it can
 
 module.exports = {
-	getPlatformApplicationARN: orgId => {
+	getPlatformApplicationARN: (orgId, platform) => {
 		return new Promise((resolve, reject) => {
-			PlatformApplication.findOne({orgId}).exec()
+			PlatformApplication.findOne({orgId, platform}).exec()
 				.then(application => {
 					resolve(application);
 				})
@@ -22,7 +22,7 @@ module.exports = {
 				})
 			.done();
 		});
-	},
+	}
 
 	// Potential CLI Route
 	// createPlatformApplication: (platform, orgId, topicArn) => {

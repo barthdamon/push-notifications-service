@@ -12,5 +12,8 @@ module.exports = {
 		appleArnId: process.env.APPLE_ARN,
 		androidArnId: process.env.ANDROID_ARN,
 		snsTopicArn: process.env.SNS_TOPIC_ARN
+	},
+	redis: {
+		uri: process.env.REDIS_URI
 	}
 };

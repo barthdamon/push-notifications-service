@@ -41,7 +41,7 @@ module.exports = {
 					// Endpoint ARN here is an endpoint that just got created
 					const params = {
 						Protocol: 'application', /* required */
-						TopicArn: config.aws.snsTopicArn, /* required */
+						TopicArn: topicARN, /* required */
 						Endpoint: data.EndpointArn
 					};
 					new req.app.get('aws').SNS().subscribe(params, function (err, data) { // eslint-disable-line

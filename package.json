@@ -4,8 +4,7 @@
   "description": "A service for sending push notifications to odd networks OTT applications",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "dev": "nodemon api.js",
     "test": "npm run xo && npm run tape",
     "tape": "tape 'test/**/*_test.js' | tap-spec",
     "xo": "xo"

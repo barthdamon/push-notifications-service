@@ -1,23 +1,3 @@
-// module.exports = {
-// 	registerDevice: (req, res) => {
-// 		const topicArn 		= req.body.topicArn;
-// 		const applicationArn = req.body.applicationArn;
-// 		const deviceToken 	= req.body.deviceToken;
-
-// 		if (topicArn && applicationArn && deviceToken) {
-// 			createPlatformEndpoint(topicArn, applicationArn, deviceToken)
-// 				.then(() => {
-// 					res.status(200).json({message: 'notification token registration successful'});
-// 				}).catch(err => {
-// 					res.status(400).json({message: `notification token registration failure: ${err}`});
-// 				})
-// 			.done();
-// 		} else {
-// 			res.status(400).json({message: 'invalid request format'});
-// 		}
-// 	}
-// };
-
 exports.createPlatformEndpoint = (topicArn, applicationArn, deviceToken) => {
 	return new Promise((resolve, reject) => {
 		const params = {

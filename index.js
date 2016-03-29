@@ -25,12 +25,6 @@ app.use(bodyParser.json());
 app.use(tokenDecode);
 app.use(deviceOrgAuth);
 
-
-/* Potential CLI routes: 
-	- Creating a new app
-	- Creating a new topic (basically a new organization)
-*/
-
 app.post('/device/new', deviceTokens.addToken);
 app.post('/notification/push', pushem.sendNotification);
 

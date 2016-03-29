@@ -9,28 +9,28 @@ const OrganizationTopic = mongoose.model('OrganizationTopic', organizationTopicS
 
 module.exports = {
 	// Potential CLI route
-	createOrganizationTopic: (req, res) => {
-		const name = req.body.orgId;
-		const params = {
-			name
-		};
-		new req.app.get('aws').SNS().createTopic(params, (err, data) => { // eslint-disable-line
-			if (err) {
-				res.status(400).json({message: `organization topic creation failure ${err}`});
-			} else {
-				const arn = data.arn;
-				const name = data.orgId;
-				const newOrganization = new OrganizationTopic({name, arn});
-				newOrganization.save(err => {
-					if (err) {
-						res.status(400).json({message: `organization topic creation failure ${err}`});
-					} else {
-						res.status(200).json({message: 'organization topic creation successful'});
-					}
-				});
-			}
-		});
-	},
+	// createOrganizationTopic: (req, res) => {
+	// 	const name = req.body.orgId;
+	// 	const params = {
+	// 		name
+	// 	};
+	// 	new req.app.get('aws').SNS().createTopic(params, (err, data) => { // eslint-disable-line
+	// 		if (err) {
+	// 			res.status(400).json({message: `organization topic creation failure ${err}`});
+	// 		} else {
+	// 			const arn = data.arn;
+	// 			const name = data.orgId;
+	// 			const newOrganization = new OrganizationTopic({name, arn});
+	// 			newOrganization.save(err => {
+	// 				if (err) {
+	// 					res.status(400).json({message: `organization topic creation failure ${err}`});
+	// 				} else {
+	// 					res.status(200).json({message: 'organization topic creation successful'});
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// },
 	subscripeEndpointToTopic: (req, data, orgId) => {
 		console.log('Subscribing new endpoint');
 		return new Promise((resolve, reject) => {
@@ -41,7 +41,7 @@ module.exports = {
 					// Endpoint ARN here is an endpoint that just got created
 					const params = {
 						Protocol: 'application', /* required */
-						TopicArn: topicARN, /* required */
+						TopicArn: config.aws.snsTopicArn, /* required */
 						Endpoint: data.EndpointArn
 					};
 					new req.app.get('aws').SNS().subscribe(params, function (err, data) { // eslint-disable-line

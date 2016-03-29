@@ -1,0 +1,13 @@
+features: {
+  notifications: {
+    enabled: true,
+    type: 'AWS',
+    config: {
+      topicArn: 'testTopicARN',
+      applicationArns: {
+      	APPLE_IOS: 'testAppleApplicationARN',
+      	GOOGLE_ANDROID: 'testAndroidApplicationARN'
+      }
+    }
+  }
+}

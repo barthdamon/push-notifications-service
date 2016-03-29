@@ -1,38 +1,38 @@
-const config = require('../config');
+exports.sendNotification = (topicArn, message) => {
+	return new Promise((resolve, reject) => {
+		const applePush	= buildApplePush(message.appleMessage, message.appleLink);
+		const androidPush = buildAndroidPush(message.androidMessage, message.androidLink, message.title);
 
-exports.sendNotification = (req, res) => {
-	const body = req.body;
-	const applePush = buildApplePush(body.appleMessage, body.appleLink);
-	const androidPush = buildAndroidPush(body.androidMessage, body.androidLink, body.title);
-
-	if (!body.message) {
-		return res.status(400).json({message: 'No push notification supplied.'});
-	}
-
-	const message = {default: body.message};
-	if (applePush) {
-		message.APNS = applePush;
-	}
-	if (androidPush) {
-		message.GCM = androidPush;
-	}
-	// TODO: Get the topic ARN for the organization in the request
-	const snsParams = {
-		TopicArn: config.aws.snsTopicArn,
-		MessageStructure: 'json',
-		Message: JSON.stringify(message)
-	};
-	console.log(`Sending an sns to amazon: ${JSON.stringify(message)}`);
-
-	new req.app.get('aws').SNS().publish(snsParams, (err, data) => { // eslint-disable-line
-		if (err) {
-			res.status(400).json({message: err});
-		} else {
-			res.status(200).json({message: 'Push notification created'});
+		if (!applePush && !androidPush) {
+			reject();
 		}
+
+		const finalMessage = {default: message};
+		if (applePush) {
+			finalMessage.APNS = applePush;
+		}
+		if (androidPush) {
+			finalMessage.GCM = androidPush;
+		}
+
+		const snsParams = {
+			TopicArn: topicArn,
+			MessageStructure: 'json',
+			Message: JSON.stringify(finalMessage)
+		};
+		console.log(`Sending an sns to amazon: ${JSON.stringify(message)}`);
+
+		new req.app.get('aws').SNS().publish(snsParams, (err, data) => { // eslint-disable-line
+			if (err) {
+				reject(err);
+			} else {
+				resolve(data);
+			}
+		});
 	});
 };
 
+// Formatting Helpers
 function buildApplePush(appleMessage, appleLink) {
 	if (!appleMessage) {
 		return null;

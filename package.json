@@ -21,13 +21,13 @@
     "jsonwebtoken": "^5.7.0",
     "lodash": "^4.6.1",
     "lru-cache": "^4.0.1",
-    "mongoose": "^4.3.3",
     "redis": "^2.5.3"
   },
   "devDependencies": {
     "nodemon": "^1.9.1",
     "tap-spec": "^4.1.1",
     "tape": "^4.5.0",
+    "sinon": "^1.17.3",
     "xo": "^0.12.1"
   },
   "xo": {

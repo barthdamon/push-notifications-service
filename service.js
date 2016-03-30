@@ -11,7 +11,7 @@ const ROLE = 'notifications';
 
 exports.initialize = (bus, options) => {
 	console.log(options);
-	// const redisClient = redis.createClient(options.redis.uri);
+	const sns = new req.app.get('aws').SNS(); //eslint-disable-line
 
 	bus.queryHandler({role: ROLE, cmd: 'registerDevice'}, payload => {
 		const platform 				= payload.platform;
@@ -22,7 +22,7 @@ exports.initialize = (bus, options) => {
 
 		if (activeArn && topicArn) {
 			console.log(`Adding device to ${activeArn}`);
-			return DeviceRegistration.createPlatformEndpoint(topicArn, activeArn, deviceCode)
+			return DeviceRegistration.createPlatformEndpoint(topicArn, activeArn, deviceCode, sns)
 				.then(device => {
 					return device;
 				});
@@ -34,7 +34,7 @@ exports.initialize = (bus, options) => {
 		const topicArn 				= notificationConfig.topicArn;
 		const message					= payload.message;
 
-		Pushem.sendNotification(topicArn, message)
+		Pushem.sendNotification(topicArn, message, sns)
 			.then(notification => {
 				return notification;
 			});

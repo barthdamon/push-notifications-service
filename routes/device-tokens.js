@@ -1,10 +1,10 @@
-exports.createPlatformEndpoint = (topicArn, applicationArn, deviceToken) => {
+exports.createPlatformEndpoint = (topicArn, applicationArn, deviceToken, sns) => {
 	return new Promise((resolve, reject) => {
 		const params = {
 			PlatformApplicationArn: applicationArn, /* required */
 			Token: deviceToken /* required */
 		};
-		new req.app.get('aws').SNS().createPlatformEndpoint(params, function(err, data) { // eslint-disable-line
+		sns.createPlatformEndpoint(params, function(err, data) { // eslint-disable-line
 			if (err) {
 				console.log('new platform endpoint creation failure');
 				console.log(err);
@@ -17,7 +17,7 @@ exports.createPlatformEndpoint = (topicArn, applicationArn, deviceToken) => {
 					TopicArn: topicArn, /* required */
 					Endpoint: data.EndpointArn /* required */
 				};
-				new req.app.get('aws').SNS().subscribe(params, function (err, data) { // eslint-disable-line
+				sns.subscribe(params, function (err, data) { // eslint-disable-line
 					if (err) {
 						console.log('Subscription failed');
 						console.log(err); // an error occurred

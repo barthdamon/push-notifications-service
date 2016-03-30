@@ -55,6 +55,7 @@ exports.sendNotification = (topicArn, message, sns) => {
 // 	});
 // }
 function publishToSNS(params, sns) {
+	console.log('Still hitting this');
 	const publish = Promise.promisify(sns.publish);
 	return new Promise((resolve, reject) => {
 		return publish(params)

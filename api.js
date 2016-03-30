@@ -4,24 +4,27 @@ const oddcast = require('oddcast');
 const express = require('express');
 
 const service = require('./service');
+const AWS = require('aws-sdk');
 
 const bus = oddcast.bus();
 const api = express();
 
+AWS.config.update({region: 'us-east-1'});
 bus.requests.use({}, oddcast.inprocessTransport());
 
 service.initialize(bus, {
-	redis: {
-		uri: process.env.REDIS_URI
-	}
+	aws: AWS
 });
 
 api.use(service.router(bus));
 
-// if (!module.parent) {
-// 	api.listen(process.env.PORT, (err) => {
-// 		console.log('Identity API running on port ' + process.env.PORT);
-// 	});
-// };
-
+if (!module.parent) {
+	api.listen(process.env.PORT, err => {
+		if (err) {
+			console.log(`Notification API launch failure ${err}`);
+		} else {
+			console.log(`Notification API running on port ${process.env.PORT}`);
+		}
+	});
+}
 module.export = api;

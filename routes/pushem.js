@@ -1,6 +1,5 @@
 const Promise = require('bluebird');
-
-// const aws = require('./aws-helper.js');
+const AWSHelper = require('./aws-helper.js');
 
 exports.sendNotification = (topicArn, message, sns) => {
 	return new Promise((resolve, reject) => {
@@ -11,12 +10,14 @@ exports.sendNotification = (topicArn, message, sns) => {
 			reject();
 		}
 
-		const finalMessage = {default: message};
+		const finalMessage = {};
 		if (applePush) {
 			finalMessage.APNS = applePush;
+			console.log('Attaching apple message');
 		}
 		if (androidPush) {
 			finalMessage.GCM = androidPush;
+			console.log('Attaching android message');
 		}
 
 		const snsParams = {
@@ -25,9 +26,7 @@ exports.sendNotification = (topicArn, message, sns) => {
 			Message: JSON.stringify(finalMessage)
 		};
 		console.log(`Sending an sns to amazon: ${JSON.stringify(finalMessage)}`);
-		console.log(sns);
-		// return resolve(snsParams);
-		publishToSNS(snsParams, sns)
+		AWSHelper.publishToSNS(snsParams, sns)
 			.then(data => {
 				return resolve(data);
 			})
@@ -35,40 +34,8 @@ exports.sendNotification = (topicArn, message, sns) => {
 				return reject(err);
 			})
 		.done();
-		// publishToSNS(snsParams, (err, data) => {
-		// 	if (err) {
-		// 		return reject(err);
-		// 	} else { // eslint-disable-line
-		// 		return resolve(data);
-		// 	}
-		// });
 	});
 };
-
-// function publishToSNS(params, callback) {
-// 	new req.app.get('aws').SNS().publish(params, (err, data) => { // eslint-disable-line
-// 		if (err) {
-// 			callback(err, null);
-// 		} else {
-// 			callback(null, data);
-// 		}
-// 	});
-// }
-function publishToSNS(params, sns) {
-	console.log('Still hitting this');
-	const publish = Promise.promisify(sns.publish);
-	return new Promise((resolve, reject) => {
-		return publish(params)
-			.then(data => {
-				return resolve(data);
-			})
-			.catch(err => {
-				return reject(err);
-			})
-		.done();
-	});
-}
-exports.publishToSNS = publishToSNS;
 
 // Formatting Helpers
 function buildApplePush(appleMessage, appleLink) {
@@ -96,3 +63,22 @@ function buildAndroidPush(androidMessage, androidLink, title) {
 	}
 	return JSON.stringify(result);
 }
+
+// OLD CALLBACK STUFF:
+		// publishToSNS(snsParams, (err, data) => {
+		// 	if (err) {
+		// 		return reject(err);
+		// 	} else { // eslint-disable-line
+		// 		return resolve(data);
+		// 	}
+		// });
+// function publishToSNS(params, callback) {
+// 	new req.app.get('aws').SNS().publish(params, (err, data) => { // eslint-disable-line
+// 		if (err) {
+// 			callback(err, null);
+// 		} else {
+// 			callback(null, data);
+// 		}
+// 	});
+// }
+

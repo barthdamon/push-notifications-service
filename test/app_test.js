@@ -4,8 +4,8 @@ const test = require('tape');
 const sinon = require('sinon');
 // const Service = require('../service.js');
 const Pushem = require('../routes/pushem.js');
-// const aws = require('../routes/aws-helper.js');
-// const Promise = require('bluebird');
+const AWSHelper = require('../routes/aws-helper.js');
+const Promise = require('bluebird');
 // const DeviceTokens = require('../routes/device-tokens.js');
 
 // const testDevicePayload = {
@@ -39,19 +39,17 @@ test('Passing test', t => {
 });
 
 test('send notification working as it should be', t => {
-	// const stub = sinon.stub(Pushem, 'publishToSNS', (params, sns) => { // eslint-disable-line
-	// 	return Promise.resolve(params);
-	// });
-	const stub = sinon.stub(Pushem, 'publishToSNS');
-	stub.returns({TopicArn: testTopicArn});
+	const stub = sinon.stub(AWSHelper, 'publishToSNS', (params, sns) => { // eslint-disable-line
+		return Promise.resolve(params);
+	});
 	t.plan(1);
-	// const stub = sinon.stub(Pushem, 'publishToSNS');
-	// stub.onCall(0).returns(true);
 	Pushem.sendNotification(testTopicArn, testNotificationMessage, null)
 		.then(notification => {
-			t.ok(notification.TopicArn === testTopicArn, 'topic arn processed correctly');
-			// t.assert(notification.Message == testNotificationMessage);
-			stub.restore();
+			console.log(notification);
+			t.equals(notification.TopicArn, testTopicArn, 'topic arn processed correctly');
+			// t.equals(notification.Message.APNS.aps.alert, testNotificationMessage.appleMessage, 'apple message formatted correctly');
+			// t.equals(notification.Message.GCM.data.message, testNotificationMessage.androidMessage, 'android message formatted correctly');
+			AWSHelper.publishToSNS.restore();
 			t.end();
 		});
 });

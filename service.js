@@ -12,7 +12,7 @@ const ROLE = 'notifications';
 exports.initialize = (bus, options) => {
 	console.log(options);
 	const aws = options.aws;
-	const sns = new aws.SNS(); //eslint-disable-line
+	const sns = Promise.promisifyAll(new aws.SNS());
 
 	bus.queryHandler({role: ROLE, cmd: 'registerDevice'}, payload => {
 		const platform 				= payload.platform;

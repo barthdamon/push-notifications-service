@@ -2,7 +2,7 @@
   "name": "push-notification-service",
   "version": "1.0.0",
   "description": "A service for sending push notifications to odd networks OTT applications",
-  "main": "index.js",
+  "main": "api.js",
   "scripts": {
     "dev": "nodemon api.js",
     "test": "npm run xo && npm run tape",

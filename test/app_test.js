@@ -42,13 +42,13 @@ test('send notification working as it should be', t => {
 	const stub = sinon.stub(AWSHelper, 'publishToSNS', (params, sns) => { // eslint-disable-line
 		return Promise.resolve(params);
 	});
-	t.plan(1);
+	t.plan(3);
 	Pushem.sendNotification(testTopicArn, testNotificationMessage, null)
 		.then(notification => {
-			console.log(notification);
+			console.log(JSON.stringify(notification));
 			t.equals(notification.TopicArn, testTopicArn, 'topic arn processed correctly');
-			// t.equals(notification.Message.APNS.aps.alert, testNotificationMessage.appleMessage, 'apple message formatted correctly');
-			// t.equals(notification.Message.GCM.data.message, testNotificationMessage.androidMessage, 'android message formatted correctly');
+			t.equals(notification.Message.APNS.aps.alert, testNotificationMessage.appleMessage, 'apple message formatted correctly');
+			t.equals(notification.Message.GCM.data.message, testNotificationMessage.androidMessage, 'android message formatted correctly');
 			AWSHelper.publishToSNS.restore();
 			t.end();
 		});

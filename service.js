@@ -10,20 +10,18 @@ const Pushem = require('./routes/pushem.js');
 const ROLE = 'notifications';
 
 exports.initialize = (bus, options) => {
-	console.log(options);
+	// console.log(options);
 	const aws = options.aws;
 	const sns = Promise.promisifyAll(new aws.SNS());
 
 	bus.queryHandler({role: ROLE, cmd: 'registerDevice'}, payload => {
-		const platform 				= payload.platform;
-		const deviceCode 				= payload.deviceCode;
-		const notificationConfig	= payload.identity.organization.features.notifications.config;
-		const topicArn 				= notificationConfig.topicArn;
-		const activeArn 				= notificationConfig.applicationArns[`${platform}`];
+		const deviceToken 			= payload.deviceToken;
+		const topicArn 				= payload.topicArn;
+		const applicationArn 		= payload.applicationArn;
 
-		if (activeArn && topicArn) {
-			console.log(`Adding device to ${activeArn}`);
-			return DeviceRegistration.createPlatformEndpoint(topicArn, activeArn, deviceCode, sns)
+		if (applicationArn && topicArn) {
+			console.log(`Adding device to ${applicationArn}`);
+			return DeviceRegistration.createPlatformEndpoint(topicArn, applicationArn, deviceToken, sns)
 				.then(device => {
 					return device;
 				});
@@ -31,8 +29,7 @@ exports.initialize = (bus, options) => {
 	});
 
 	bus.queryHandler({role: ROLE, cmd: 'sendNotification'}, payload => {
-		const notificationConfig 	= payload.identity.organization.features.notifications.config;
-		const topicArn 				= notificationConfig.topicArn;
+		const topicArn 				= payload.topicArn;
 		const message					= payload.message;
 
 		Pushem.sendNotification(topicArn, message, sns)

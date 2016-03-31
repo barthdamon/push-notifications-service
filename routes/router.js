@@ -1,22 +1,23 @@
+const _ = require('lodash');
 const router = require('express').Router(); // eslint-disable-line
 
 module.exports = (bus, options) => {
-	console.log(options);
+	// console.log(options);
 	router.get('/notifications/register', (req, res) => {
-		const topicArn 		= req.body.topicArn;
-		const applicationArn = req.body.applicationArn;
-		const deviceToken 	= req.body.deviceToken;
+		const topicArn 		= _.get(options.topicArn);
+		const applicationArn = _.get(options.applicationArn);
+		const deviceToken 	= _.get(options.deviceToken);
 
-		bus.query({role: 'identity', cmd: 'fetchOrganization'}, {topicArn, applicationArn, deviceToken})
+		bus.query({role: 'notifications', cmd: 'registerDevice'}, {topicArn, applicationArn, deviceToken})
 			.then(device => {
 				res.send(device);
 			});
 	});
 
 	router.get('/notifications/send', (req, res) => {
-		const message  	= req.body.message;
-		const topicArn 	= req.body.topicArn;
-		bus.query({role: 'identity', cmd: 'fetchDevice'}, {topicArn, message})
+		const topicArn 	= _.get(options.topicArn);
+		const message  	= _.get(options.message);
+		bus.query({role: 'notifications', cmd: 'sendNotification'}, {topicArn, message})
 			.then(notification => {
 				res.send(notification);
 			});

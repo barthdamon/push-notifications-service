@@ -22,7 +22,7 @@
     "jsonwebtoken": "^5.7.0",
     "lodash": "^4.6.1",
     "lru-cache": "^4.0.1",
-    "oddcast": "git@github.com:oddnetworks/oddcast.git",
+    "oddcast": "^2.0.0",
     "redis": "^2.5.3"
   },
   "devDependencies": {

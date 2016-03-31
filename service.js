@@ -10,7 +10,7 @@ const Pushem = require('./routes/pushem.js');
 const ROLE = 'notifications';
 
 exports.initialize = (bus, options) => {
-	// console.log(options);
+	console.log('Notification Service Initialized');
 	const aws = options.aws;
 	const sns = Promise.promisifyAll(new aws.SNS());
 

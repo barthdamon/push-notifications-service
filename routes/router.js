@@ -3,7 +3,7 @@ const router = require('express').Router(); // eslint-disable-line
 
 module.exports = (bus, options) => {
 	// console.log(options);
-	router.get('/register', (req, res) => {
+	router.post('/register', (req, res) => {
 		const topicArn 		= _.get(options.topicArn);
 		const applicationArn = _.get(options.applicationArn);
 		const deviceToken 	= _.get(options.deviceToken);
@@ -14,7 +14,7 @@ module.exports = (bus, options) => {
 			});
 	});
 
-	router.get('/send', (req, res) => {
+	router.post('/send', (req, res) => {
 		const topicArn 	= _.get(options.topicArn);
 		const message  	= _.get(options.message);
 		bus.query({role: 'notifications', cmd: 'sendNotification'}, {topicArn, message})

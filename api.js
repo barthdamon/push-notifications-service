@@ -32,4 +32,4 @@ if (!module.parent) {
 		}
 	});
 }
-module.export = api;
+module.exports = api;

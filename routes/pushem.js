@@ -23,7 +23,7 @@ exports.sendNotification = (topicArn, message, sns) => {
 		const snsParams = {
 			TopicArn: topicArn,
 			MessageStructure: 'json',
-			Message: finalMessage
+			Message: JSON.stringify(finalMessage)
 		};
 		AWSHelper.publishToSNS(snsParams, sns)
 			.then(data => {
@@ -42,10 +42,10 @@ function buildApplePush(appleMessage, appleLink) {
 		return null;
 	}
 
-	return {
+	return JSON.stringify({
 		aps: {alert: appleMessage},
 		link: (appleLink || 'collectionIdHere')
-	};
+	});
 }
 
 function buildAndroidPush(androidMessage, androidLink, title) {
@@ -60,6 +60,6 @@ function buildAndroidPush(androidMessage, androidLink, title) {
 	if (title) {
 		result.data.title = title;
 	}
-	return result;
+	return JSON.strinify(result);
 }
 

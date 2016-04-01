@@ -1,9 +1,12 @@
 const Promise = require('bluebird');
 
-exports.publishToSNS = function (params, sns) {
+exports.publishToSNS = function (objectParams, sns) {
+	const params = JSON.stringify(objectParams);
+	console.log(`Sending an sns to amazon: ${params}`);
 	return new Promise((resolve, reject) => {
 		sns.publish(params, (err, data) => {
 			if (err) {
+				console.log(`Error sending notification to aws: ${err}`);
 				reject(err);
 			} else {
 				resolve(data);

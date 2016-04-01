@@ -25,8 +25,7 @@ exports.sendNotification = (topicArn, message, sns) => {
 			MessageStructure: 'json',
 			Message: finalMessage
 		};
-		console.log(`Sending an sns to amazon: ${JSON.stringify(finalMessage)}`);
-		AWSHelper.publishToSNS(JSON.stringify(snsParams), sns)
+		AWSHelper.publishToSNS(snsParams, sns)
 			.then(data => {
 				return resolve(data);
 			})

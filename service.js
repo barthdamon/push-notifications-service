@@ -1,6 +1,7 @@
 // const cryo = require('cryo');
 const Promise = require('bluebird');
 const redis = require('redis');
+const config = require('config');
 Promise.promisifyAll(redis);
 
 const DeviceRegistration = require('./routes/device-tokens.js');
@@ -12,6 +13,7 @@ const ROLE = 'notifications';
 exports.initialize = (bus, options) => {
 	console.log('Notification Service Initialized');
 	const aws = options.aws;
+	aws.config.updaet(config.aws);
 	const sns = new aws.SNS();
 
 	bus.queryHandler({role: ROLE, cmd: 'registerDevice'}, payload => {

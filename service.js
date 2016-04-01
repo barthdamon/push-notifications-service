@@ -13,7 +13,7 @@ const ROLE = 'notifications';
 exports.initialize = (bus, options) => {
 	console.log('Notification Service Initialized');
 	const aws = options.aws;
-	aws.config.updaet(config.aws);
+	aws.config.update(config.aws);
 	const sns = new aws.SNS();
 
 	bus.queryHandler({role: ROLE, cmd: 'registerDevice'}, payload => {

@@ -1,9 +1,9 @@
 const Promise = require('bluebird');
 
 exports.publishToSNS = function (params, sns) {
-	const publish = Promise.promisify(sns.publish);
+	const publish = sns.publish(params).promise();
 	return new Promise((resolve, reject) => {
-		return publish(params)
+		return publish
 			.then(data => {
 				return resolve(data);
 			})
@@ -20,19 +20,17 @@ exports.registerDeviceWithSNS = function (topicArn, applicationArn, deviceToken,
 		PlatformApplicationArn: applicationArn, /* required */
 		Token: deviceToken /* required */
 	};
-
-	// const createPlatformEndpoint = Promise.promisify(sns.createPlatformEndpoint);
-	// const subscribe = Promise.promisify(sns.subscribe);
-
+	const createEndpoint = sns.createPlatformEndpoint(endpointParams).promise();
 	return new Promise((resolve, reject) => {
-		return sns.createPlatformEndpoint(endpointParams)
+		return createEndpoint
 			.then(data => {
 				const subscriptionParams = {
 					Protocol: 'application', /* required */
 					TopicArn: topicArn, /* required */
 					Endpoint: data.EndpointArn /* required */
 				};
-				return sns.subscribe(subscriptionParams) //eslint-disable-line
+				const subscribe = sns.subscribe(subscriptionParams).promise();
+				return subscribe // eslint-disable-line
 			})
 			.then(data => {
 				return resolve(data);

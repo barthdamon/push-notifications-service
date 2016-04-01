@@ -60,6 +60,6 @@ function buildAndroidPush(androidMessage, androidLink, title) {
 	if (title) {
 		result.data.title = title;
 	}
-	return JSON.strinify(result);
+	return JSON.stringify(result);
 }
 

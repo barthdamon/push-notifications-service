@@ -15,23 +15,24 @@ exports.publishToSNS = function (params, sns) {
 };
 
 exports.registerDeviceWithSNS = function (topicArn, applicationArn, deviceToken, sns) {
+	console.log(`AWS Helper registering device`);
 	const endpointParams = {
 		PlatformApplicationArn: applicationArn, /* required */
 		Token: deviceToken /* required */
 	};
 
-	// const newEndpoint = Promise.promisify(sns.createPlatformEndpoint);
-	// const subscribe = Promise.promisify(sns.subscribe);
+	const createPlatformEndpoint = Promise.promisify(sns.createPlatformEndpoint);
+	const subscribe = Promise.promisify(sns.subscribe);
 
 	return new Promise((resolve, reject) => {
-		return sns.createPlatformEndpoint(endpointParams)
+		return createPlatformEndpoint(endpointParams)
 			.then(data => {
 				const subscriptionParams = {
 					Protocol: 'application', /* required */
 					TopicArn: topicArn, /* required */
 					Endpoint: data.EndpointArn /* required */
 				};
-				return sns.subscribe(subscriptionParams) //eslint-disable-line
+				return subscribe(subscriptionParams) //eslint-disable-line
 			})
 			.then(data => {
 				return resolve(data);

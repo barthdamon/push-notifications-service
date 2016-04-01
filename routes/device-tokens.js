@@ -2,7 +2,7 @@ const Promise = require('bluebird');
 const AWSHelper = require('./aws-helper.js'); // eslint-disable-line
 
 exports.createPlatformEndpoint = (topicArn, applicationArn, deviceToken, sns) => { // eslint-disable-line
-	console.log(`Device Token registering Device: ${deviceToken}, application: ${applicationArn}, topicArn: ${topicArn}`);
+	console.log(`Device Token registering Device`);
 	return new Promise((resolve, reject) => { // eslint-disable-line
 		// resolve(true);
 		return AWSHelper.registerDeviceWithSNS(topicArn, applicationArn, deviceToken, sns)

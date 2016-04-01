@@ -32,7 +32,7 @@ exports.initialize = (bus, options) => {
 		const topicArn 				= payload.topicArn;
 		const message					= payload.message;
 
-		Pushem.sendNotification(topicArn, message, sns)
+		return Pushem.sendNotification(topicArn, message, sns)
 			.then(notification => {
 				return notification;
 			});

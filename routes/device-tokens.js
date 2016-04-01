@@ -4,7 +4,7 @@ const AWSHelper = require('./aws-helper.js');
 exports.createPlatformEndpoint = (topicArn, applicationArn, deviceToken, sns) => {
 	console.log(`Registering Device: ${deviceToken}, application: ${applicationArn}, topicArn: ${topicArn}`);
 	return new Promise((resolve, reject) => {
-		AWSHelper.registerDeviceWithSNS(topicArn, applicationArn, deviceToken, sns)
+		return AWSHelper.registerDeviceWithSNS(topicArn, applicationArn, deviceToken, sns)
 			.then(data => {
 				return resolve(data);
 			})

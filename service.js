@@ -12,20 +12,18 @@ const ROLE = 'notifications';
 exports.initialize = (bus, options) => {
 	console.log('Notification Service Initialized');
 	const aws = options.aws;
-	const sns = Promise.promisifyAll(new aws.SNS());
+	const sns = new aws.SNS();
 
 	bus.queryHandler({role: ROLE, cmd: 'registerDevice'}, payload => {
 		const deviceToken 			= payload.deviceToken;
-		const topicArn 				= payload.topicArn;
+		const topicArn 				= payload.topicArn; // eslint-disable-line
 		const applicationArn 		= payload.applicationArn;
 
-		if (applicationArn && topicArn) {
-			console.log(`Adding device to ${applicationArn}`);
-			return DeviceRegistration.createPlatformEndpoint(topicArn, applicationArn, deviceToken, sns)
-				.then(device => {
-					return device;
-				});
-		}
+		console.log(`Service adding device to ${applicationArn}, with device code: ${deviceToken}`);
+		return DeviceRegistration.createPlatformEndpoint(topicArn, applicationArn, deviceToken, sns)
+			.then(device => {
+				return device;
+			});
 	});
 
 	bus.queryHandler({role: ROLE, cmd: 'sendNotification'}, payload => {

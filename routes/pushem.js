@@ -7,7 +7,7 @@ exports.sendNotification = (topicArn, message, sns) => {
 		const androidPush = buildAndroidPush(message.androidMessage, message.androidLink, message.title);
 
 		if (!applePush && !androidPush) {
-			reject();
+			return reject();
 		}
 
 		const finalMessage = {};

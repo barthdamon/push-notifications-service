@@ -2,12 +2,11 @@ const _ = require('lodash');
 const router = require('express').Router(); // eslint-disable-line
 
 module.exports = (bus, options) => {
-	// console.log(options);
 	router.post('/register', (req, res) => {
 		const topicArn 		= _.get(options.topicArn);
 		const applicationArn = _.get(options.applicationArn);
 		const deviceToken 	= _.get(options.deviceToken);
-
+		console.log(`Router registering device with ${topicArn}, ${applicationArn}, ${deviceToken}`);
 		bus.query({role: 'notifications', cmd: 'registerDevice'}, {topicArn, applicationArn, deviceToken})
 			.then(device => {
 				res.send(device);

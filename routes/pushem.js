@@ -64,21 +64,3 @@ function buildAndroidPush(androidMessage, androidLink, title) {
 	return result;
 }
 
-// OLD CALLBACK STUFF:
-		// publishToSNS(snsParams, (err, data) => {
-		// 	if (err) {
-		// 		return reject(err);
-		// 	} else { // eslint-disable-line
-		// 		return resolve(data);
-		// 	}
-		// });
-// function publishToSNS(params, callback) {
-// 	new req.app.get('aws').SNS().publish(params, (err, data) => { // eslint-disable-line
-// 		if (err) {
-// 			callback(err, null);
-// 		} else {
-// 			callback(null, data);
-// 		}
-// 	});
-// }
-

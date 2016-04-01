@@ -20,18 +20,18 @@ exports.registerDeviceWithSNS = function (topicArn, applicationArn, deviceToken,
 		Token: deviceToken /* required */
 	};
 
-	const newEndpoint = Promise.promisify(sns.createPlatformEndpoint);
-	const subscribe = Promise.promisify(sns.subscribe);
+	// const newEndpoint = Promise.promisify(sns.createPlatformEndpoint);
+	// const subscribe = Promise.promisify(sns.subscribe);
 
 	return new Promise((resolve, reject) => {
-		return newEndpoint(endpointParams)
+		return sns.createPlatformEndpoint(endpointParams)
 			.then(data => {
 				const subscriptionParams = {
 					Protocol: 'application', /* required */
 					TopicArn: topicArn, /* required */
 					Endpoint: data.EndpointArn /* required */
 				};
-				return subscribe(subscriptionParams) //eslint-disable-line
+				return sns.subscribe(subscriptionParams) //eslint-disable-line
 			})
 			.then(data => {
 				return resolve(data);

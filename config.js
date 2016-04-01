@@ -4,14 +4,12 @@ module.exports = {
 	main: {
 		port: process.env.PORT
 	},
-	mongodb: {
-		uri: process.env.MONGODB_URI
-	},
 	aws: {
-		region: process.env.AWS_DEFAULT_REGION,
-		appleArnId: process.env.APPLE_ARN,
-		androidArnId: process.env.ANDROID_ARN,
-		snsTopicArn: process.env.SNS_TOPIC_ARN
+		credentials: {
+			region: process.env.AWS_DEFAULT_REGION,
+			accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+			secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+		}
 	},
 	redis: {
 		uri: process.env.REDIS_URI

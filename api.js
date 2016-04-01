@@ -9,7 +9,6 @@ const AWS = require('aws-sdk');
 const bus = oddcast.bus();
 const api = express();
 
-AWS.config.update({region: 'us-east-1'});
 bus.requests.use({}, oddcast.inprocessTransport());
 
 service.initialize(bus, {

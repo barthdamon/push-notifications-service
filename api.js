@@ -17,10 +17,10 @@ service.initialize(bus, {
 });
 
 api.use(service.router(bus, {
-	topicArn: 'req.body.topicArn',
-	applicationArn: 'req.body.applicationArn',
-	deviceToken: 'req.body.deviceToken',
-	message: 'req.body.message'
+	topicArn: 'body.topicArn',
+	applicationArn: 'body.applicationArn',
+	deviceToken: 'body.deviceToken',
+	message: 'body.message'
 }));
 
 if (!module.parent) {

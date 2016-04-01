@@ -1,7 +1,7 @@
 // const cryo = require('cryo');
 const Promise = require('bluebird');
 const redis = require('redis');
-const config = require('config');
+const config = require('./config.js');
 Promise.promisifyAll(redis);
 
 const DeviceRegistration = require('./routes/device-tokens.js');

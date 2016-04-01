@@ -10,7 +10,7 @@ exports.sendNotification = (topicArn, message, sns) => {
 			return reject();
 		}
 
-		const finalMessage = {};
+		const finalMessage = {default: message.title};
 		if (applePush) {
 			finalMessage.APNS = applePush;
 			console.log('Attaching apple message');

@@ -13,7 +13,7 @@ module.exports = (bus, options) => {
 			});
 	});
 
-	router.post('/send', (req, res) => {
+	router.post('/notify', (req, res) => {
 		const topicArn 	= _.get(req, options.topicArn);
 		const message  	= _.get(req, options.message);
 		bus.query({role: 'notifications', cmd: 'sendNotification'}, {topicArn, message})

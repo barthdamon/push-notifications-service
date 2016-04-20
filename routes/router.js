@@ -3,7 +3,7 @@ const router = require('express').Router(); // eslint-disable-line
 
 module.exports = (bus, options) => {
 	router.post('/register', (req, res) => {
-		const organizationTopicArn 		= _.get(req, options.orgranizationTopicArn);
+		const organizationTopicArn 		= _.get(req, options.organizationTopicArn);
 		const applicationTopicArn 		= _.get(req, options.applicationTopicArn);
 		const applicationArn = _.get(req, options.applicationArn);
 		const deviceToken 	= _.get(req, options.deviceToken);

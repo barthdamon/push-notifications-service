@@ -22,7 +22,7 @@ exports.initialize = (bus, options) => {
 		const applicationArn 		= payload.applicationArn;
 		const deviceToken 			= payload.deviceToken;
 
-		console.log(`Service adding device to ${applicationArn}, with device code: ${deviceToken}`);
+		console.log(`Service adding device to ${applicationArn}, of the ${organizationTopicArn} organization with device code: ${deviceToken}`);
 		return DeviceRegistration.createPlatformEndpoint(organizationTopicArn, applicationTopicArn, applicationArn, deviceToken, sns)
 			.then(device => {
 				return device;

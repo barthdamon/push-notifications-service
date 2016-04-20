@@ -15,7 +15,7 @@ exports.publishToSNS = function (params, sns) {
 	});
 };
 
-exports.registerDeviceWithSNS = function (topicArn, applicationTopicArn, applicationArn, deviceToken, sns) {
+exports.registerDeviceWithSNS = function (organizationTopicArn, applicationTopicArn, applicationArn, deviceToken, sns) {
 	console.log(`AWS Helper registering device`);
 	const endpointData = {};
 
@@ -38,7 +38,7 @@ exports.registerDeviceWithSNS = function (topicArn, applicationTopicArn, applica
 				// }
 				const orgTopicParams = {
 					Protocol: 'application', /* required */
-					TopicArn: topicArn,  //eslint-disable-line
+					TopicArn: organizationTopicArn,  //eslint-disable-line
 					Endpoint: endpointData.EndpointArn /* required */
 				};
 				sns.subscribe(orgTopicParams, function (err, data) { // eslint-disable-line

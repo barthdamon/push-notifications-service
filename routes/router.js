@@ -3,12 +3,12 @@ const router = require('express').Router(); // eslint-disable-line
 
 module.exports = (bus, options) => {
 	router.post('/register', (req, res) => {
-		const topicArn 		= _.get(req, options.orgranizationTopicArn);
+		const organizationTopicArn 		= _.get(req, options.orgranizationTopicArn);
 		const applicationTopicArn 		= _.get(req, options.applicationTopicArn);
 		const applicationArn = _.get(req, options.applicationArn);
 		const deviceToken 	= _.get(req, options.deviceToken);
-		console.log(`Router registering device with ${topicArn}, ${applicationTopicArn}, ${applicationArn}, ${deviceToken}`);
-		bus.query({role: 'notifications', cmd: 'registerDevice'}, {topicArn, applicationTopicArn, applicationArn, deviceToken})
+		console.log(`Router registering device with ${organizationTopicArn}, ${applicationTopicArn}, ${applicationArn}, ${deviceToken}`);
+		bus.query({role: 'notifications', cmd: 'registerDevice'}, {organizationTopicArn, applicationTopicArn, applicationArn, deviceToken})
 			.then(device => {
 				res.send(device);
 			});

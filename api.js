@@ -16,7 +16,7 @@ service.initialize(bus, {
 });
 
 api.use(service.router(bus, {
-	topicArn: 'body.organizationTopicArn',
+	organizationTopicArn: 'body.organizationTopicArn',
 	applicationTopicArn: 'body.applicationTopicArn',
 	applicationArn: 'body.applicationArn',
 	deviceToken: 'body.deviceToken',

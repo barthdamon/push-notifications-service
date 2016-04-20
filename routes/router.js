@@ -7,6 +7,7 @@ module.exports = (bus, options) => {
 		const applicationTopicArn 		= _.get(req, options.applicationTopicArn);
 		const applicationArn = _.get(req, options.applicationArn);
 		const deviceToken 	= _.get(req, options.deviceToken);
+		console.log(`Request: ${req}`);
 		console.log(`Router registering device with ${organizationTopicArn}, ${applicationTopicArn}, ${applicationArn}, ${deviceToken}`);
 		bus.query({role: 'notifications', cmd: 'registerDevice'}, {organizationTopicArn, applicationTopicArn, applicationArn, deviceToken})
 			.then(device => {

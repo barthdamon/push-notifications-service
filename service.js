@@ -33,7 +33,7 @@ exports.initialize = (bus, options) => {
 		const organizationTopicArn = payload.organizationTopicArn;
 		const message					= payload.message;
 
-		return Pushem.sendNotification(organizationTopicArn, message, sns, null)
+		return Pushem.notify(organizationTopicArn, message, sns)
 			.then(notification => {
 				return notification;
 			});
@@ -43,7 +43,7 @@ exports.initialize = (bus, options) => {
 		const applicationTopicArn 	= payload.applicationTopicArn;
 		const message					= payload.message;
 
-		return Pushem.sendNotification(applicationTopicArn, message, sns, )
+		return Pushem.notify(applicationTopicArn, message, sns, )
 			.then(notification => {
 				return notification;
 			});

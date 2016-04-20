@@ -17,12 +17,13 @@ exports.initialize = (bus, options) => {
 	const sns = new aws.SNS();
 
 	bus.queryHandler({role: ROLE, cmd: 'registerDevice'}, payload => {
-		const deviceToken 			= payload.deviceToken;
-		const topicArn 				= payload.topicArn; // eslint-disable-line
+		const organizationTopicArn = payload.organizationTopicArn; // eslint-disable-line
+		const applicationTopicArn 	= payload.applicationTopicArn;
 		const applicationArn 		= payload.applicationArn;
+		const deviceToken 			= payload.deviceToken;
 
 		console.log(`Service adding device to ${applicationArn}, with device code: ${deviceToken}`);
-		return DeviceRegistration.createPlatformEndpoint(topicArn, applicationTopicArn, applicationArn, deviceToken, sns)
+		return DeviceRegistration.createPlatformEndpoint(organizationTopicArn, applicationTopicArn, applicationArn, deviceToken, sns)
 			.then(device => {
 				return device;
 			});

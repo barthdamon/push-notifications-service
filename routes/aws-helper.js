@@ -33,9 +33,9 @@ exports.registerDeviceWithSNS = function (topicArn, applicationTopicArn, applica
 				console.log('new platform endpoint creation success');
 				console.log(data);
 				endpointData = data;
-				if (topicArn == null) {
-					resolve(data);
-				}
+				// if (topicArn == null) {
+				// 	resolve(data);
+				// }
 				const orgTopicParams = {
 					Protocol: 'application', /* required */
 					TopicArn: topicArn,  //eslint-disable-line
@@ -48,9 +48,9 @@ exports.registerDeviceWithSNS = function (topicArn, applicationTopicArn, applica
 						reject(err);
 					} else {
 						console.log('orgTopic Subscription Successful');
-						if (applicationTopicArn == null) {
-							resolve(data);
-						}
+						// if (applicationTopicArn == null) {
+						// 	resolve(data);
+						// }
 						const applicationTopicParams = {
 							Protocol: 'application', /* required */
 							TopicArn: applicationTopicArn,  //eslint-disable-line

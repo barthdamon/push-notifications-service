@@ -43,7 +43,7 @@ exports.initialize = (bus, options) => {
 		const applicationTopicArn 	= payload.applicationTopicArn;
 		const message					= payload.message;
 
-		return Pushem.notify(applicationTopicArn, message, sns, )
+		return Pushem.notify(applicationTopicArn, message, sns)
 			.then(notification => {
 				return notification;
 			});

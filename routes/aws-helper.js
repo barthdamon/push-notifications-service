@@ -17,7 +17,7 @@ exports.publishToSNS = function (params, sns) {
 
 exports.registerDeviceWithSNS = function (organizationTopicArn, applicationTopicArn, applicationArn, deviceToken, sns) {
 	console.log(`AWS Helper registering device`);
-	const endpointData = {};
+	let endpointData = {};
 
 	return new Promise((resolve, reject) => {
 		const endpointParams = {

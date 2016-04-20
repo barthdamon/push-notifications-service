@@ -15,7 +15,7 @@ exports.publishToSNS = function (params, sns) {
 	});
 };
 
-exports.registerDeviceWithSNS = function (topicArn, applicationArn, deviceToken, sns) {
+exports.registerDeviceWithSNS = function (topicArn, applicationTopicArn, applicationArn, deviceToken, sns) {
 	console.log(`AWS Helper registering device`);
 	return new Promise((resolve, reject) => {
 		const endpointParams = {
@@ -30,20 +30,40 @@ exports.registerDeviceWithSNS = function (topicArn, applicationArn, deviceToken,
 			} else {
 				console.log('new platform endpoint creation success');
 				console.log(data);
-				const params = {
+				if (topicArn == null) {
+					resolve(data);
+				}
+				const orgTopicParams = {
 					Protocol: 'application', /* required */
 					TopicArn: topicArn,  //eslint-disable-line
 					Endpoint: data.EndpointArn /* required */
 				};
-				sns.subscribe(params, function (err, data) { // eslint-disable-line
+				sns.subscribe(orgTopicParams, function (err, data) { // eslint-disable-line
 					if (err) {
-						console.log('Subscription failed');
+						console.log('OrgTopic Subscription Failed');
 						console.log(err); // an error occurred
 						reject(err);
 					} else {
-						console.log('Subscription succeeded');
-						console.log(data);
-						resolve(data);
+						console.log('orgTopic Subscription Successful');
+						if (applicationTopicArn == null) {
+							resolve(data);
+						}
+						const applicationTopicParams = {
+							Protocol: 'application', /* required */
+							TopicArn: applicationTopicArn,  //eslint-disable-line
+							Endpoint: data.EndpointArn /* required */
+						};
+						sns.subscribe(applicationTopicParams, function (err, data) { // eslint-disable-line
+							if (err) {
+								console.log('applicationTopic Subscription failed');
+								console.log(err); // an error occurred
+								reject(err);
+							} else {
+								console.log('applicationTopic Subscription Succeeded');
+								console.log(data);
+								resolve(data);
+							}
+						});
 					}
 				});
 			}

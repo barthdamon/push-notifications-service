@@ -1,7 +1,7 @@
 const Promise = require('bluebird');
 const AWSHelper = require('./aws-helper.js');
 
-exports.sendNotification = (topicArn, message, sns) => {
+exports.notifyAll = (topicArn, message, sns) => {
 	return new Promise((resolve, reject) => {
 		const applePush	= buildApplePush(message.appleMessage, message.appleLink);
 		const androidPush = buildAndroidPush(message.androidMessage, message.androidLink, message.title);
@@ -20,11 +20,14 @@ exports.sendNotification = (topicArn, message, sns) => {
 			console.log('Attaching android message');
 		}
 
+		
 		const snsParams = {
 			TopicArn: topicArn,
 			MessageStructure: 'json',
 			Message: JSON.stringify(finalMessage)
 		};
+
+
 		AWSHelper.publishToSNS(snsParams, sns)
 			.then(data => {
 				return resolve(data);

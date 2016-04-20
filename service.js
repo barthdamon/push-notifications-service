@@ -22,21 +22,32 @@ exports.initialize = (bus, options) => {
 		const applicationArn 		= payload.applicationArn;
 
 		console.log(`Service adding device to ${applicationArn}, with device code: ${deviceToken}`);
-		return DeviceRegistration.createPlatformEndpoint(topicArn, applicationArn, deviceToken, sns)
+		return DeviceRegistration.createPlatformEndpoint(topicArn, applicationTopicArn, applicationArn, deviceToken, sns)
 			.then(device => {
 				return device;
 			});
 	});
 
-	bus.queryHandler({role: ROLE, cmd: 'sendNotification'}, payload => {
-		const topicArn 				= payload.topicArn;
+	bus.queryHandler({role: ROLE, cmd: 'notifyOrganization'}, payload => {
+		const organizationTopicArn = payload.organizationTopicArn;
 		const message					= payload.message;
 
-		return Pushem.sendNotification(topicArn, message, sns)
+		return Pushem.sendNotification(organizationTopicArn, message, sns, null)
 			.then(notification => {
 				return notification;
 			});
 	});
+
+	bus.queryHandler({role: ROLE, cmd: 'notifyApplication'}, payload => {
+		const applicationTopicArn 	= payload.applicationTopicArn;
+		const message					= payload.message;
+
+		return Pushem.sendNotification(applicationTopicArn, message, sns, )
+			.then(notification => {
+				return notification;
+			});
+	});
+
 };
 
 // exports.middleware = require('./middleware');

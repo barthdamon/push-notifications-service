@@ -1,3 +1,5 @@
+'use strict';
+
 const Promise = require('bluebird');
 
 exports.publishToSNS = function (params, sns) {

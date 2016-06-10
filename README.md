@@ -38,13 +38,19 @@ To use this push notification service you are going to have to set up an AWS SNS
 Docs are here for configuring SNS:
 http://docs.aws.amazon.com/sns/latest/dg/GettingStarted.html
 
-You will need the following ENV variables from your Amazon SNS setup to get the service working:
+You are going to need these env variables in your process in order for the AWS sdk to be configured to your account:
 
 - AWS_SECRET_ACCESS_KEY
 - AWS_ACCESS_KEY_ID
+- AWS_DEFAULT_REGION
+
+You will need the following AWS ARNs from your Amazon SNS setup to get the service working. These need to be attached to requests that you forward to this service. Whether you want to store them in a database or as env variables is totally up to you.
+
 - APPLE_ARN_ID
 - ANDROID_ARN_ID
 - SNS_TOPIC_ARN
+- ANDROID_TOPIC_ARN
+- IOS_TOPIC_ARN
 
 The ARN variables are what SNS uses to identify where to send the push notification. To get a APPLE and ANDORID ARN you need to setup
 those projects as Applicaitons on AWS SNS. For help getting your apple and android apps setup you can refer to the AWS docs here:

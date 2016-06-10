@@ -1,12 +1,37 @@
-# push-notifications-service
-Node app to manage iOS and Android device tokens, coordinate with Amazon SNS, and send push notifications
+# odd-notification-service
 
+This app uses oddcast to accept formatted notifications and send them to AWS SNS.
 
 ## Installation:
 
 ```$npm install```
 
-## Setup AWS ARN Variables:
+## Usage:
+
+This service requires a separate web service for recieving device token registration requests and notification requests.
+
+The API uses the following keys to send notifications:
+
+```json
+	organizationTopicArn: 'body.organizationTopicArn',
+	applicationTopicArn: 'body.applicationTopicArn',
+	applicationArn: 'body.applicationArn',
+	deviceToken: 'body.deviceToken',
+	message: 'body.message'
+```
+The organization topic arn is used to send notifications to the entire organization, whereas the application topic arns are used to send notifications to specific applications. The application arn is for when a device is registering, in order for it to subscribe for notifications. The message is the formatted json that contains the message for the push notification.
+
+You can customize the way this service parses your request in 
+```
+api.js
+``` 
+but also feel free to just use the router and customize that however you want:
+```
+routes/router.js
+```
+
+
+## AWS Setup:
 
 To use this push notification service you are going to have to set up an AWS SNS Topic for your apps to subscribe to.
 
@@ -41,33 +66,28 @@ On iOS you can use:
 func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) 
 ```
 
-You must then send the device token to wherever you host this service:
-https://YOURHOST/device/new
-with the following body (using the deviceToken param from didRegisterForRemoteNotificationsWithDeviceToken in the iOS example):
+You must then send the device token to wherever your separate web server is hosted, and send to this route on this service:
+```
+/register
+```
+You will need to send up the device token from the device and then attach that devices application arn in your web service to the request body to register a device with API in this service.
 
-```json
-{
-  "token" : "YOURDEVICETOKEN",
-  "device" : "apple"
-}
+## Sending Notifications
+Your web service can send notifications to this service via the following routes:
+```
+/notify/organization
 ```
 
+or 
 
-## PUSH 'EM!
-Now you're ready to send a push notification! All you need to do now is hit this service with a request:
-
-```json
-{
-    "appleMessage" : "YOU HAVE BEEN NOTIFIED",
-    "message" : "TESTING",
-}
+```
+/notify/application
 ```
 
-The exact notification format for each device is slightly different, and can be customized. Refer to the routes in ```pushem.js``` for a starting point.
+You can customize the format of the message for both platforms in the json, links to resources for formatting notifications are below:
 
-Here are links to keys to customize notifications:
-#####APNS:
+#####APNS
 https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/TheNotificationPayload.html#//apple_ref/doc/uid/TP40008194-CH107-SW1
 
-#####GCM:
+#####GCM
 https://developers.google.com/cloud-messaging/http-server-ref
